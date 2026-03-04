@@ -1,70 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Play Croc (GBC)</title>
-
-<style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    text-align:center;
-    font-family:Arial, sans-serif;
-}
-
-#game-container{
-    margin-top:20px;
-}
-
-canvas{
-    border:4px solid #444;
-    image-rendering: pixelated;
-}
-
-button{
-    padding:10px 16px;
-    margin:10px;
-    font-size:16px;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="simple.css">
+  <title>Croc (GBC) - binjgb</title>
 </head>
 
 <body>
+  <div id="game">
+    <canvas id="mainCanvas" width="160" height="144">No Canvas Support</canvas>
+  </div>
 
-<h1>Croc (Game Boy Color)</h1>
+  <div id="controller">
+    <div id="controller_dpad">
+      <div id="controller_left"></div>
+      <div id="controller_right"></div>
+      <div id="controller_up"></div>
+      <div id="controller_down"></div>
+    </div>
 
-<div id="game-container">
-    <canvas id="screen" width="160" height="144"></canvas>
-</div>
+    <div id="controller_select" class="capsuleBtn">Select</div>
+    <div id="controller_start" class="capsuleBtn">Start</div>
+    <div id="controller_b" class="roundBtn">B</div>
+    <div id="controller_a" class="roundBtn">A</div>
+  </div>
 
-<div>
-    <button onclick="loadROM()">Start Game</button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/gh/grantgalitz/GameBoy-Online@master/js/GameBoyCore.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/grantgalitz/GameBoy-Online@master/js/GameBoyIO.js"></script>
-
-<script>
-
-let gameboy;
-
-function loadROM(){
-
-    fetch("Croc (USA, Europe).gbc")
-    .then(response => response.arrayBuffer())
-    .then(data => {
-
-        gameboy = new GameBoyCore(document.getElementById("screen"));
-
-        gameboy.openMBC(new Uint8Array(data));
-        gameboy.start();
-
-    });
-
-}
-
-</script>
-
+  <script src="binjgb.js"></script>
+  <script src="simple.js"></script>
 </body>
 </html>
