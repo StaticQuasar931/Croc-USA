@@ -1,73 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Croc (USA, Europe) - Game Boy Color</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Croc (GBC)</title>
 
 <link rel="stylesheet" href="simple.css">
 
 <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: #0f0f12;
+    overflow: hidden;
+  }
 
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:Arial;
-    text-align:center;
-}
+  /* Layout: game takes the space, controller docks to bottom */
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+  }
 
-#game{
-    margin-top:20px;
-}
+  /* Canvas area */
+  #game {
+    flex: 1;
+    width: 100%;
+    max-width: 980px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: env(safe-area-inset-top) 10px 10px 10px;
+    box-sizing: border-box;
+  }
 
-canvas{
+  /* Canvas scaling: keep aspect, fit viewport */
+  #mainCanvas {
+    width: min(96vw, calc((100vh - var(--controller-h, 240px) - 24px) * (160 / 144)));
+    height: auto;
+    max-height: calc(100vh - var(--controller-h, 240px) - 24px);
+    aspect-ratio: 160 / 144;
     image-rendering: pixelated;
-    border:4px solid #444;
-}
+    image-rendering: crisp-edges;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+    background: #000;
+  }
 
+  /* Controller dock */
+  #controller {
+    width: 100%;
+    max-width: 980px;
+    box-sizing: border-box;
+    padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+    background: rgba(255,255,255,0.06);
+    border-top: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px 18px 0 0;
+    margin: 0;
+  }
+
+  /* Make controller elements size nicely */
+  #controller_dpad, #controller_select, #controller_start, #controller_a, #controller_b {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Subtle polish */
+  .capsuleBtn, .roundBtn {
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
+  }
+
+  /* Desktop: optionally hide touch controller and let keyboard handle it */
+  @media (hover: hover) and (pointer: fine) {
+    #controller {
+      opacity: 0.95;
+    }
+  }
 </style>
-
 </head>
-
 
 <body>
 
-<h2>Croc (USA, Europe) - Game Boy Color</h2>
+  <div id="game">
+    <canvas id="mainCanvas" width="160" height="144">No Canvas Support</canvas>
+  </div>
 
-<div id="game">
+  <div id="controller">
+    <div id="controller_dpad">
+      <div id="controller_left"></div>
+      <div id="controller_right"></div>
+      <div id="controller_up"></div>
+      <div id="controller_down"></div>
+    </div>
 
-<canvas id="mainCanvas" width="160" height="144">
-Your browser does not support canvas
-</canvas>
+    <div id="controller_select" class="capsuleBtn">Select</div>
+    <div id="controller_start" class="capsuleBtn">Start</div>
+    <div id="controller_b" class="roundBtn">B</div>
+    <div id="controller_a" class="roundBtn">A</div>
+  </div>
 
-</div>
+  <script>
+    // Measure controller height so the canvas can perfectly fit above it
+    function setControllerHeightVar() {
+      const c = document.getElementById("controller");
+      if (!c) return;
+      const h = Math.ceil(c.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--controller-h", h + "px");
+    }
+    window.addEventListener("load", setControllerHeightVar, { once: true });
+    window.addEventListener("resize", setControllerHeightVar);
+    window.addEventListener("orientationchange", () => setTimeout(setControllerHeightVar, 50));
+  </script>
 
-
-<div id="controller">
-
-<div id="controller_dpad">
-
-<div id="controller_left"></div>
-<div id="controller_right"></div>
-<div id="controller_up"></div>
-<div id="controller_down"></div>
-
-</div>
-
-<div id="controller_select" class="capsuleBtn">Select</div>
-<div id="controller_start" class="capsuleBtn">Start</div>
-
-<div id="controller_b" class="roundBtn">B</div>
-<div id="controller_a" class="roundBtn">A</div>
-
-</div>
-
-
-<script src="binjgb.js"></script>
-<script src="simple.js"></script>
+  <script src="binjgb.js"></script>
+  <script src="simple.js"></script>
 
 </body>
 </html>
