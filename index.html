@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Play Croc (GBC)</title>
+
+<style>
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    text-align:center;
+    font-family:Arial, sans-serif;
+}
+
+#game-container{
+    margin-top:20px;
+}
+
+canvas{
+    border:4px solid #444;
+    image-rendering: pixelated;
+}
+
+button{
+    padding:10px 16px;
+    margin:10px;
+    font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Croc (Game Boy Color)</h1>
+
+<div id="game-container">
+    <canvas id="screen" width="160" height="144"></canvas>
+</div>
+
+<div>
+    <button onclick="loadROM()">Start Game</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/grantgalitz/GameBoy-Online@master/js/GameBoyCore.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/grantgalitz/GameBoy-Online@master/js/GameBoyIO.js"></script>
+
+<script>
+
+let gameboy;
+
+function loadROM(){
+
+    fetch("Croc (USA, Europe).gbc")
+    .then(response => response.arrayBuffer())
+    .then(data => {
+
+        gameboy = new GameBoyCore(document.getElementById("screen"));
+
+        gameboy.openMBC(new Uint8Array(data));
+        gameboy.start();
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
